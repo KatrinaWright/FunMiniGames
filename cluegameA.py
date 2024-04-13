@@ -18,6 +18,8 @@ suspects.remove(solution_suspect)
 weapons.remove(solution_weapon)
 locations.remove(solution_location)
 
+#change for testing purposes
+
 # Data structures for tracking clues
 players = {
     "Nathan": {"seen":{"Suspects": [], "Weapons": [], "Locations": []}, "hand": []},
