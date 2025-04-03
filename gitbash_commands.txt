@@ -1,0 +1,10 @@
+# Command to run the clue game tests in GitBash
+
+# Navigate to the directory with the test file
+cd /path/to/directory
+
+# Run the tests with verbose output
+python -m pytest test_clue_game.py -v
+
+# Alternative command
+./pytest test_clue_game.py -v
