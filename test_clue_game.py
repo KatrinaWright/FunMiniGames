@@ -5,7 +5,7 @@ import importlib.util
 import random
 
 # Import the cluegameA module
-spec = importlib.util.spec_from_file_location("cluegameA", "/tmp/inputs/FunMiniGames/cluegameA.py")
+spec = importlib.util.spec_from_file_location("cluegameA", "cluegameA.py")
 cluegameA = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(cluegameA)
 
@@ -14,7 +14,7 @@ class TestClueGame:
     def setup_method(self):
         """Reset the game state before each test"""
         # Reload the module to reset the game state
-        spec = importlib.util.spec_from_file_location("cluegameA", "/tmp/inputs/FunMiniGames/cluegameA.py")
+        spec = importlib.util.spec_from_file_location("cluegameA", "cluegameA.py")
         self.clue = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(self.clue)
         
