@@ -21,7 +21,7 @@ def import_clue_game():
         random.choice = fixed_choice
         
         # Dynamically import the module
-        spec = importlib.util.spec_from_file_location("cluegameA", os.path.join(os.path.dirname(__file__), "..", "inputs", "FunMiniGames", "cluegameA.py"))
+        spec = importlib.util.spec_from_file_location("cluegameA", os.path.join(os.path.dirname(__file__), "cluegameA.py"))
         clue_module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(clue_module)
         
