@@ -1,0 +1,290 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Starfield Checkers: Nebula Clash</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: url('https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_1280.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Arial', sans-serif;
+            color: #ffffff;
+        }
+        h1 {
+            font-size: 3em;
+            color: #00b7eb; /* Bright cyan */
+            text-shadow: 0 0 10px #00b7eb, 0 0 20px #8a2be2; /* Cyan and purple glow */
+            margin: 20px;
+        }
+        #setup {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        #setup input {
+            margin: 10px;
+            padding: 5px;
+            font-size: 1em;
+        }
+        #setup button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #8a2be2; /* Purple */
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #game-board {
+            display: none; /* Hidden until names are set */
+            grid-template-columns: repeat(8, 60px);
+            grid-template-rows: repeat(8, 60px);
+            gap: 2px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 5px;
+            border: 2px solid #8a2be2;
+            border-radius: 5px;
+        }
+        .square {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        .dark {
+            background-color: #1e90ff; /* Dodger blue */
+        }
+        .light {
+            background-color: #e6e6fa; /* Lavender */
+        }
+        .piece {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .player1-piece {
+            background-color: #8a2be2; /* Purple */
+            border: 2px solid #ffffff;
+        }
+        .player2-piece {
+            background-color: #00b7eb; /* Cyan */
+            border: 2px solid #ffffff;
+        }
+        .selected {
+            border: 3px solid #00ff00; /* Green for selection */
+        }
+      
+      
+        #turn-indicator {
+            margin-top: 10px;
+            font-size: 1.2em;
+        }
+      #player-2zone {
+            margin-bottom: 10px;
+            font-size: 2em;
+            background-color: #00b7eb; /* Cyan */
+            border: 2px solid #ffffff; 
+            border-radius: 20%;
+            padding: 10px 20px; 
+        }
+      #player-1zone {
+            margin-top: 10px;
+            font-size: 2em;
+            background-color: #8a2be2; /* Purple */
+            border: 2px solid #ffffff; 
+            border-radius: 20%;
+            padding: 10px 20px;
+        }
+      .select + label {
+            margin-top: 2rem;
+        
+         
+}
+      select {
+  font-family: inherit;
+  font-size: inherit;
+  cursor: inherit;
+      }
+
+.select {
+  display: grid;
+  grid-template-areas: "select";
+  align-items: center;
+  position: relative;
+  select,
+      }
+  &::after {
+  grid-area: select;
+  background-color: #00b7eb; /* Cyan */ 
+
+  min-width: 15ch;
+  max-width: 30ch;
+
+  border: 2px #00b7eb; /* Cyan */
+  border-radius: 0.25em;
+  padding: 0.25em 0.5em;
+
+  font-size: 1.25rem;
+  cursor: pointer;
+  line-height: 1.1;
+      }
+
+    </style>
+</head>
+<body>
+    <h1>Starfield Checkers: Nebula Clash</h1>
+    <div id="setup">
+      <label >
+        <select name="player1-name" id="player1-name" placeholder="Player 1 Name">
+          <option value="Player 1">Player 1</option>
+          <option value="Captain">Captain</option>
+          <option value="Admiral">Admiral</option>
+          <option value="Lieutenant">Lieutenant</option>
+          <option value="Commodore">Commodore</option>
+          <option value="Tactical Officer">Tactical Officer</option>
+          <option value="Chief Engineer">Chief Engineer</option>
+          <option value="Head Chef">Head Chef</option>
+        </select>
+      </label>
+           <label >
+        <select name="player2-name" id="player2-name" placeholder="Player 2 Name">
+          <option value="Player 2">Player 2</option>
+          <option value="Captain">Captain</option>
+          <option value="Admiral">Admiral</option>
+          <option value="Lieutenant">Lieutenant</option>
+          <option value="Commodore">Commodore</option>
+          <option value="Tactical Officer">Tactical Officer</option>
+          <option value="Chief Engineer">Chief Engineer</option>
+          <option value="Head Chef">Head Chef</option>
+        </select>
+      </label>
+        <button onclick="startGame()">Start Game</button>
+    </div>
+    <div id="player-2zone"></div>
+    <div id="game-board"></div>
+    <div id="player-1zone"></div>
+    <div id="turn-indicator"></div>
+
+    <script>
+        const board = Array(8).fill().map(() => Array(8).fill(null));
+        let selectedPiece = null;
+        let turn = 'player1';
+        let player1Name = '';
+        let player2Name = '';
+
+        // Start the game with player names
+        function startGame() {
+            player1Name = document.getElementById('player1-name').value || 'Player 1';
+            player2Name = document.getElementById('player2-name').value || 'Player 2';
+            document.getElementById('setup').style.display = 'none';
+            document.getElementById('game-board').style.display = 'grid';
+            initBoard();
+            updateTurnIndicator();
+            Labelzone2();
+            Labelzone1();
+        }
+
+        // Initialize the board
+        function initBoard() {
+            const gameBoard = document.getElementById('game-board');
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    const square = document.createElement('div');
+                    square.classList.add('square');
+                    square.classList.add((row + col) % 2 === 0 ? 'light' : 'dark');
+                    square.dataset.row = row;
+                    square.dataset.col = col;
+
+                    // Place pieces
+                    if ((row + col) % 2 !== 0) {
+                        if (row < 3) {
+                            const piece = document.createElement('div');
+                            piece.classList.add('piece', 'player2-piece');
+                            square.appendChild(piece);
+                            board[row][col] = 'player2';
+                        } else if (row > 4) {
+                            const piece = document.createElement('div');
+                            piece.classList.add('piece', 'player1-piece');
+                            square.appendChild(piece);
+                            board[row][col] = 'player1';
+                        }
+                    }
+
+                    square.addEventListener('click', handleClick);
+                    gameBoard.appendChild(square);
+                }
+            }
+        }
+
+        // Handle clicks on the board
+        function handleClick(event) {
+            const row = parseInt(event.currentTarget.dataset.row);
+            const col = parseInt(event.currentTarget.dataset.col);
+            const square = event.currentTarget;
+
+            if (selectedPiece) {
+                const fromRow = parseInt(selectedPiece.parentElement.dataset.row);
+                const fromCol = parseInt(selectedPiece.parentElement.dataset.col);
+
+                if (isValidMove(fromRow, fromCol, row, col)) {
+                    movePiece(fromRow, fromCol, row, col);
+                    selectedPiece.classList.remove('selected');
+                    selectedPiece = null;
+                    turn = turn === 'player1' ? 'player2' : 'player1';
+                    updateTurnIndicator();
+                } else {
+                    selectedPiece.classList.remove('selected');
+                    selectedPiece = null;
+                }
+            } else if (square.firstChild && board[row][col] === turn) {
+                selectedPiece = square.firstChild;
+                selectedPiece.classList.add('selected');
+            }
+        }
+
+        // Check if move is valid
+        function isValidMove(fromRow, fromCol, toRow, toCol) {
+            if (board[toRow][toCol]) return false;
+            const rowDiff = toRow - fromRow;
+            const colDiff = Math.abs(toCol - fromCol);
+
+            if (turn === 'player1' && rowDiff === -1 && colDiff === 1) return true; // Player 1 moves up
+            if (turn === 'player2' && rowDiff === 1 && colDiff === 1) return true; // Player 2 moves down
+            return false;
+        }
+
+        // Move the piece
+        function movePiece(fromRow, fromCol, toRow, toCol) {
+            const squareFrom = document.querySelector(`[data-row="${fromRow}"][data-col="${fromCol}"]`);
+            const squareTo = document.querySelector(`[data-row="${toRow}"][data-col="${toCol}"]`);
+            const piece = squareFrom.firstChild;
+
+            squareTo.appendChild(piece);
+            board[toRow][toCol] = board[fromRow][fromCol];
+            board[fromRow][fromCol] = null;
+        }
+
+        // Update turn indicator
+        function updateTurnIndicator() {
+            const indicator = document.getElementById('turn-indicator');
+            indicator.textContent = `Turn: ${turn === 'player1' ? player1Name : player2Name}`;
+        }
+      
+      function Labelzone1() {
+            const labeler1 = document.getElementById('player-1zone');
+            labeler1.textContent = player1Name;
+        }
+      function Labelzone2() {
+            const labeler2 = document.getElementById('player-2zone');
+            labeler2.textContent = player2Name;
+        }
+    </script>
+</body>
