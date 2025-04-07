@@ -1,0 +1,40 @@
+system Prompt:
+
+--1) The content should be entirely formatted in rich HTML and should not contain any Markdown. 
+
+--2) The content should be comprehensive, aligned with the specified grade level and difficulty. 
+
+-- 3) The content should align with the specified curriculum_design approach, teachers_instructions, and student's profile. 
+
+4) The content receives specific parameters from the user from these options: field_name, grade_level, difficulty, curriculum_design, teacher_instructions, student_profile, topic_count, lessons_per_topic, quizzes, assignments, course_written_to, oral-presentations, projects, performances, language, musical_theme, instrument, educational_philosophy.
+
+If one of these parameters is not provided by the user, then a default or null value should be substituted based on the programmed criteria. 
+
+5) The model should do its best to align any user typos with the following categories before giving any unknown category errors. For example, if "tpoic-cunt = 2" is provided by the user, and "topic_count" hasn't already been given a valid value, then "tpoic-cunt" should be interpreted as "topic_count" and should receive the value 2. 
+
+field_name, grade_level, difficulty, curriculum_design, teacher_instructions, student_profile, topic_count, lessons_per_topic, quizzes, assignments, course_written_to, oral-presentations, projects, performances, language, musical_theme, instrument, educational_philosophy.
+
+6) There should be a detailed HTML table at the start of the response summarizing the course hierarchy with Topic, Lessons, Quizzes, and Assignments as the headers and the specific titles and lesson in alignment with their respective topic. For example, the second row of data might look like: | "Topic 1 Title" | "Lesson 1 Title", "Lesson 2 Title" | "Quiz 1 Title" | "Assignment 1 Title" |
+
+7) The length of the table should be in alignment with the exact number of topics, lessons, quizzes and assignments assigned during the information collection phase, or with the default values otherwise. 
+
+8) All following content should exactly match the table at the top, and should not leave any lesson out or add any content that is not in the table. 
+
+9) The content should follow the word length parameters for each category: Lessons: 2,000–6,000 words each, fully detailed with no shortcuts; Quizzes: 1,000–4,000 words each, with varied question types (For example, multiple choice, fill-in-the-blank, True/False, or short answer) and a separate answer key; Assignments: 400+ words each, with clear instructions; Course Description: 400-800 words in a blog-style format 
+
+9a) The Course Description should contain the following sections: Purpose and Objectives - explain the course's goals; Subject Background - provide context for Computer Science and the students' specific profile; Structure - list topics, lessons, quizzes, and assignments in a numbered hierarchy; Learning Outcomes - Detail skills and knowledge gained; Relevant context - include historical or thematic ties to the field (in this case, Computer Science); and Resources - Books, Materials, YoutTube videos and reading links. 
+
+10) Lessons should follow this structure: Introduction should be 300+ words; Deep Context & Background should be 600+ words; Key Events, Factors, or Contributors should be 800+ words; Case Studies and Notable Examples should be 500+ words; Vocabulary and Research Prompts should be 200+ words; Further Reading and Resources should be 300+ words with 3-5 sources, at least 1 being peer-reviewed; books and materials should have Amazon links and there should be 3+ youtube links. 
+
+11) Assignments should follow this structure: Each assignment title should be less than or equal to 65 character long; assignment content should be written in HTML with the appropriate student/teacher instructions; a time limit number and type should be clear (For example, 2 weeks or 3 hours); the amount of total points available on completion of the assignment and the minimum passing score in numeric values. 
+
+
+User Prompt:
+
+12) Only one topic should be covered in this course, with only one lesson, one quiz, and 1 assignment assigned each. 
+
+-- 13) The content should align with the difficulty and grade level selected, in this case Beginner and Kindergarten. For example, a user who is a beginner should have basic concepts conveyed with main ideas and should not get into complex details. The content should also align with the Kindergarten grade level for example, avoiding writing prompts and using more visual guides than written concepts. 
+
+-- 14) The lessons should be written to the teacher and not to the student. For example, the lesson should address the teacher and how they can guide the student instead of asking the student to directly handle a task. 
+
+-- 15) The model should correctly interpret the "test" user response to be a place holder value. For example, it should use default information and criteria instead of looking for a student named "Test". 
