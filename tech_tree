@@ -1,0 +1,68 @@
+digraph {
+	Farming [label=Farming]
+	Toolmaking [label=Toolmaking]
+	Hunting [label=Hunting]
+	Pottery [label=Pottery]
+	Ironworking [label=Ironworking]
+	Wheelbarrow [label=Wheelbarrow]
+	Writing [label=Writing]
+	"Printing Press" [label="Printing Press"]
+	Gunpowder [label=Gunpowder]
+	Astronomy [label=Astronomy]
+	"Steam Engine" [label="Steam Engine"]
+	Electricity [label=Electricity]
+	Automobile [label=Automobile]
+	Radio [label=Radio]
+	Airplane [label=Airplane]
+	Computers [label=Computers]
+	Robotics [label=Robotics]
+	Biotechnology [label=Biotechnology]
+	"Renewable Energy" [label="Renewable Energy"]
+	"Artificial Intelligence" [label="Artificial Intelligence"]
+	"Space Exploration" [label="Space Exploration"]
+	Nanotechnology [label=Nanotechnology]
+	"Quantum Computing" [label="Quantum Computing"]
+	"Materials Science" [label="Materials Science"]
+	"Medical Research" [label="Medical Research"]
+	"Environmental Science" [label="Environmental Science"]
+	"Computer Networks" [label="Computer Networks"]
+	" Database Systems" [label="Database Systems"]
+	"Software Engineering" [label="Software Engineering"]
+	Cryptography [label=Cryptography]
+	"Machine Learning" [label="Machine Learning"]
+	"Data Mining" [label="Data Mining"]
+	"Virtual Reality" [label="Virtual Reality"]
+	Cybernetics [label=Cybernetics]
+	Farming -> Toolmaking
+	Toolmaking -> Hunting
+	Toolmaking -> Pottery
+	Hunting -> Writing
+	Pottery -> Wheelbarrow
+	Wheelbarrow -> Ironworking
+	Ironworking -> Gunpowder
+	Gunpowder -> Astronomy
+	Astronomy -> "Steam Engine"
+	"Steam Engine" -> Electricity
+	Electricity -> Automobile
+	Automobile -> Radio
+	Radio -> Airplane
+	Airplane -> Computers
+	Computers -> Robotics
+	Computers -> Biotechnology
+	Electricity -> "Renewable Energy"
+	Computers -> "Artificial Intelligence"
+	Computers -> "Space Exploration"
+	Biotechnology -> Nanotechnology
+	Computers -> "Quantum Computing"
+	"Materials Science" -> Nanotechnology
+	"Medical Research" -> Biotechnology
+	"Environmental Science" -> "Renewable Energy"
+	"Computer Networks" -> Computers
+	"Database Systems" -> Computers
+	"Software Engineering" -> Computers
+	Cryptography -> Computers
+	"Machine Learning" -> "Artificial Intelligence"
+	"Data Mining" -> "Machine Learning"
+	"Virtual Reality" -> Computers
+	Cybernetics -> "Artificial Intelligence"
+}

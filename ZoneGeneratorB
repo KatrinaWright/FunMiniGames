@@ -1,0 +1,110 @@
+import random
+
+grid_size = 5
+building_types = {
+    "residential": {"size": (1, 1), "max_blocks": 4},  # Can occupy 1-4 blocks
+    "commercial": {"size": (1, 1), "max_blocks": 2},
+    "industrial": {"size": (2, 2), "max_blocks": 1},
+    "park": {"size": (2, 3), "max_blocks": 1},
+    "fast food restaurant": {"size": (1, 1), "max_blocks": 1},
+    "gas station": {"size": (1, 1), "max_blocks": 1},
+    "office": {"size": (2, 1), "max_blocks": 2},
+    "shopping mall": {"size": (3, 3), "max_blocks": 1}
+}
+
+
+
+
+def generate_city_grid():
+    grid = [[None for _ in range(grid_size)] for _ in range(grid_size)]  # 2D Array
+    generate_zones(grid)  # Initial zoning
+    place_buildings(grid)
+    return grid
+
+def generate_zones(grid):
+    # Simple zoning example (you can make this much more complex!)
+    center_x, center_y = grid_size // 2, grid_size // 2
+    for row_i in range(grid_size):
+        for col_i in range(grid_size):
+            distance_to_center = max(abs(row_i - center_x), abs(col_i - center_y))
+            if distance_to_center < 3:
+                grid[row_i][col_i] = "high_density"
+            elif distance_to_center < 8:
+                grid[row_i][col_i] = "medium_density"
+            else:
+                grid[row_i][col_i] = "low_density"
+
+def place_buildings(grid):
+    for row_i in range(grid_size):
+        for col_i in range(grid_size):
+            if grid[row_i][col_i] is not None:  # Skip zoned blocks
+                block_type, block_size = choose_building_type(grid, row_i, col_i)
+                if block_type:
+                    place_building(grid, row_i, col_i, block_type, block_size)
+
+
+
+def choose_building_type(grid, row_i, col_i):
+    zone = grid[row_i][col_i]
+    # Distribution rules based on zone
+    if zone == "high_density":
+        weights = {
+            "residential": 0.6,
+            "commercial": 0.3,
+            "office": 0.1,
+            "shopping mall": 0.02  # Rare
+        }
+    elif zone == "medium_density":
+        weights = {
+            "residential": 0.7,
+            "commercial": 0.2,
+            "park": 0.1
+        }
+    else:
+        weights = {
+            "residential": 0.8,
+            "industrial": 0.15,
+            "park": 0.05
+        }
+
+    # Choose building type based on weights
+    
+    available_types = list(building_types.keys())
+    while available_types:
+        block_type = random.choices(list(weights.keys()), weights=list(weights.values()))[0]
+        block_size = building_types[block_type]["size"]
+        if check_space_available(row_i, col_i, block_size):
+            return block_type, block_size
+        else:
+            available_types.remove(block_type)
+    return None, (0, 0)  # No suitable building found
+
+def place_building(grid, row_i, col_i, block_type, block_size):
+    for i in range(block_size[0]):
+        for j in range(block_size[1]):
+            grid[row_i + i][col_i + j] = {
+                block_type,
+                (row_i, col_i)
+                #"type": block_type,
+                #"occupied_by": (row_i, col_i)
+            }
+
+
+def check_space_available(row_i, col_i, block_size):
+    for i in range(block_size[0]):
+        for j in range(block_size[1]):
+            if row_i + i >= grid_size or col_i + j >= grid_size or grid[row_i + i][col_i + j] is not None:
+                return False
+    return True
+
+grid = [[None for _ in range(grid_size)] for _ in range(grid_size)]
+city_grid = generate_city_grid()
+print(city_grid)
+
+
+
+
+    # Check if the desired block size fits within grid boundaries
+    # and doesn't overlap with existing buildings
+    # ... (implementation depends on your grid representation)
+

@@ -1,0 +1,65 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import plotly.graph_objects as go
+
+# Define the size of the galaxy map
+galaxy_size = 100
+
+# Create a 3D array to represent the galaxy
+galaxy = np.zeros((galaxy_size, galaxy_size, galaxy_size), dtype=int)
+
+# Define the number of stars to generate
+num_stars = 100
+
+# Generate random coordinates for each star
+star_coords = np.random.randint(0, galaxy_size, (num_stars, 3))
+
+# Assign a value of 1 to each star's coordinates in the galaxy array
+galaxy[star_coords[:, 0], star_coords[:, 1], star_coords[:, 2]] = 1
+
+# Add Earth location at 0,0,0
+earth_coords = np.array([0, 0, 0])
+galaxy[earth_coords[0], earth_coords[1], earth_coords[2]] = 2  # assign a value of 2 to represent Earth
+
+
+distances = []
+
+for i in range(num_stars):
+    star_coords_i = star_coords[i]
+    distance = np.linalg.norm(star_coords_i - earth_coords)
+    distances.append(distance)
+
+# Create a 3D scatter plot with Plotly
+fig = go.Figure(data=[go.Scatter3d(x=star_coords[:, 0], y=star_coords[:, 1], z=star_coords[:, 2],
+                                   mode='markers',
+                                   marker=dict(color='blue', size=5),
+                                   hoverinfo='text',
+                                   hovertext=['Distance from Earth: {:.2f} light-years'.format(distance) for distance in distances])])
+
+# Add event handler to scatter plot
+fig.update_layout(clickmode='event+select')
+
+def dostuff(event):
+    # Get the clicked point
+    point = event['points'][0]
+
+    # Get the index of the clicked star
+    index = np.where((star_coords[:, 0] == point['x']) & (star_coords[:, 1] == point['y']) & (star_coords[:, 2] == point['z']))[0]
+
+    # Update the color of the clicked star to green
+    fig.data[0].marker.color[index] = 'green'
+
+    # Update the plot
+    fig.update()
+
+fig.on_click(dostuff)
+
+# Add Earth marker
+fig.add_trace(go.Scatter3d(x=[earth_coords[0]], y=[earth_coords[1]], z=[earth_coords[2]],
+                             mode='markers',
+                             marker=dict(color='red', size=10),
+                             name='Earth'))
+
+# Show the plot
+fig.show()
+

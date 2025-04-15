@@ -1,0 +1,86 @@
+import graphviz
+
+# Define the nodes and edges of the graph
+nodes = [
+    {'name': 'Farming', 'label': 'Farming'},
+    {'name': 'Toolmaking', 'label': 'Toolmaking'},
+    {'name': 'Hunting', 'label': 'Hunting'},
+    {'name': 'Pottery', 'label': 'Pottery'},
+    {'name': 'Ironworking', 'label': 'Ironworking'},
+    {'name': 'Wheelbarrow', 'label': 'Wheelbarrow'},
+    {'name': 'Writing', 'label': 'Writing'},
+    {'name': 'Printing Press', 'label': 'Printing Press'},
+    {'name': 'Gunpowder', 'label': 'Gunpowder'},
+    {'name': 'Astronomy', 'label': 'Astronomy'},
+    {'name': 'Steam Engine', 'label': 'Steam Engine'},
+    {'name': 'Electricity', 'label': 'Electricity'},
+    {'name': 'Automobile', 'label': 'Automobile'},
+    {'name': 'Radio', 'label': 'Radio'},
+    {'name': 'Airplane', 'label': 'Airplane'},
+    {'name': 'Computers', 'label': 'Computers'},
+    {'name': 'Robotics', 'label': 'Robotics'},
+    {'name': 'Biotechnology', 'label': 'Biotechnology'},
+    {'name': 'Renewable Energy', 'label': 'Renewable Energy'},
+    {'name': 'Artificial Intelligence', 'label': 'Artificial Intelligence'},
+    {'name': 'Space Exploration', 'label': 'Space Exploration'},
+    {'name': 'Nanotechnology', 'label': 'Nanotechnology'},
+    {'name': 'Quantum Computing', 'label': 'Quantum Computing'},
+    {'name': 'Materials Science', 'label': 'Materials Science'},
+    {'name': 'Medical Research', 'label': 'Medical Research'},
+    {'name': 'Environmental Science', 'label': 'Environmental Science'},
+    {'name': 'Computer Networks', 'label': 'Computer Networks'},
+    {'name': ' Database Systems', 'label': 'Database Systems'},
+    {'name': 'Software Engineering', 'label': 'Software Engineering'},
+    {'name': 'Cryptography', 'label': 'Cryptography'},
+    {'name': 'Machine Learning', 'label': 'Machine Learning'},
+    {'name': 'Data Mining', 'label': 'Data Mining'},
+    {'name': 'Virtual Reality', 'label': 'Virtual Reality'},
+    {'name': 'Cybernetics', 'label': 'Cybernetics'}
+]
+
+edges = [
+    {'source': 'Farming', 'target': 'Toolmaking'},
+    {'source': 'Toolmaking', 'target': 'Hunting'},
+    {'source': 'Toolmaking', 'target': 'Pottery'},
+    {'source': 'Hunting', 'target': 'Writing'},
+    {'source': 'Pottery', 'target': 'Wheelbarrow'},
+    {'source': 'Wheelbarrow', 'target': 'Ironworking'},
+    {'source': 'Ironworking', 'target': 'Gunpowder'},
+    {'source': 'Gunpowder', 'target': 'Astronomy'},
+    {'source': 'Astronomy', 'target': 'Steam Engine'},
+    {'source': 'Steam Engine', 'target': 'Electricity'},
+    {'source': 'Electricity', 'target': 'Automobile'},
+    {'source': 'Automobile', 'target': 'Radio'},
+    {'source': 'Radio', 'target': 'Airplane'},
+    {'source': 'Airplane', 'target': 'Computers'},
+    {'source': 'Computers', 'target': 'Robotics'},
+    {'source': 'Computers', 'target': 'Biotechnology'},
+    {'source': 'Electricity', 'target': 'Renewable Energy'},
+    {'source': 'Computers', 'target': 'Artificial Intelligence'},
+    {'source': 'Computers', 'target': 'Space Exploration'},
+    {'source': 'Biotechnology', 'target': 'Nanotechnology'},
+    {'source': 'Computers', 'target': 'Quantum Computing'},
+    {'source': 'Materials Science', 'target': 'Nanotechnology'},
+    {'source': 'Medical Research', 'target': 'Biotechnology'},
+    {'source': 'Environmental Science', 'target': 'Renewable Energy'},
+    {'source': 'Computer Networks', 'target': 'Computers'},
+    {'source': 'Database Systems', 'target': 'Computers'},
+    {'source': 'Software Engineering', 'target': 'Computers'},
+    {'source': 'Cryptography', 'target': 'Computers'},
+    {'source': 'Machine Learning', 'target': 'Artificial Intelligence'},
+    {'source': 'Data Mining', 'target': 'Machine Learning'},
+    {'source': 'Virtual Reality', 'target': 'Computers'},
+    {'source': 'Cybernetics', 'target': 'Artificial Intelligence'}
+]
+
+# Create the graph
+graph = graphviz.Digraph()
+
+# Add nodes and edges to the graph
+for node in nodes:
+    graph.node(node['name'], node['label'])
+for edge in edges:
+    graph.edge(edge['source'], edge['target'])
+
+# Render the graph to an SVG file
+graph.render('tech_tree', format='svg')

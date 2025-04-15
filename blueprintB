@@ -1,0 +1,77 @@
+import random
+import matplotlib.pyplot as plt
+
+# Define a function to generate a random room
+def generate_room(width, height):
+  # Randomly select a shape for the room (rectangle, square, or triangle)
+  shape = random.choice(["rectangle", "square", "triangle"])
+  
+  # Randomly select the room's dimensions
+  if shape == "rectangle":
+    length = random.randint(2, 5)
+    width = random.randint(2, 5)
+  elif shape == "square":
+    length = width
+  elif shape == "triangle":
+    length = random.randint(2, 5)
+    width = random.randint(2, 5)
+  
+  # Randomly select the room's position
+  x = random.randint(0, 10)
+  y = random.randint(0, 10)
+  
+  # Return the room's dimensions and position
+  return (x, y, length, width)
+
+# Define a function to generate a house blueprint
+def generate_house():
+  # Initialize an empty list to store the rooms
+  rooms = []
+  
+  # Loop until we have 5-10 rooms
+  while len(rooms) < 5 or len(rooms) > 10:
+    # Generate a new room
+    room = generate_room(random.randint(2, 5), random.randint(2, 5))
+    
+    # Check if the room intersects with any existing rooms
+    intersects = False
+    for existing_room in rooms:
+      if intersects_with(room, existing_room):
+        intersects = True
+        break
+    
+    # Add the room to the list if it doesn't intersect with any existing rooms
+    if not intersects:
+      rooms.append(room)
+  
+  # Return the house blueprint (a list of rooms)
+  return rooms
+
+# Define a function to check if two rooms intersect
+def intersects_with(room1, room2):
+  # Check if the rooms' bounding boxes intersect
+  if (room1[0] <= room2[0] + room2[2] and room1[0] + room1[2] >= room2[0]) and \
+     (room1[1] <= room2[1] + room2[3] and room1[1] + room1[3] >= room2[1]):
+    return True
+  return False
+
+def plot_house(house):
+  fig, ax = plt.subplots()
+  ax.set_title("House Blueprint")
+  ax.set_xlabel("Width")
+  ax.set_ylabel("Height")
+  
+  for room in house:
+    x, y, w, h = room
+    x += 0.5  # Add 0.5 to x-coordinate
+    y += 0.5  # Add 0.5 to y-coordinate
+    rect = plt.Rectangle((x, y), w, h, fill=False, edgecolor='black')
+    ax.add_patch(rect)
+  
+  fig.set_size_inches(8, 8)
+  plt.show()
+
+# Test the generate_house function
+house = generate_house()
+plot_house(house)
+

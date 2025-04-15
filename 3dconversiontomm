@@ -1,0 +1,125 @@
+import math
+class Measurement3D:
+    def __init__(self, length_ft=0, length_in=0, width_ft=0, width_in=0, height_ft=0, height_in=0):
+        """Initialize 3D measurement with feet and inches for each dimension"""
+        self.length_mm = self._to_mm(length_ft, length_in)
+        self.width_mm = self._to_mm(width_ft, width_in)
+        self.height_mm = self._to_mm(height_ft, height_in)
+    
+    @staticmethod
+    def _to_mm(feet, inches):
+        """Convert feet and inches to millimeters"""
+        total_inches = (feet * 12) + inches
+        return round(total_inches * 25.4, 2)  # 1 inch = 25.4mm
+    
+    def __str__(self):
+        """String representation in millimeters"""
+        return f"{self.length_mm}mm x {self.width_mm}mm x {self.height_mm}mm"
+
+class PrinterVolume:
+    def __init__(self, length_mm=75, width_mm=80, height_mm=90):
+        """Initialize printer volume in millimeters"""
+        self.length_mm = length_mm
+        self.width_mm = width_mm
+        self.height_mm = height_mm
+
+def convert_to_scale(measurement, scale):
+    """Convert a 3D measurement to a specific scale"""
+    scaled_length = measurement.length_mm / scale
+    scaled_width = measurement.width_mm / scale
+    scaled_height = measurement.height_mm / scale
+    return ScaledObject(scaled_length, scaled_width, scaled_height)
+
+class ScaledObject:
+    def __init__(self, length_mm, width_mm, height_mm):
+        """Initialize scaled object with dimensions in millimeters"""
+        self.length_mm = round(length_mm, 2)
+        self.width_mm = round(width_mm, 2)
+        self.height_mm = round(height_mm, 2)
+    
+    def calculate_segments(self, printer_volume):
+        """Calculate if and how the object needs to be segmented"""
+        length_segments = max(1, math.ceil(self.length_mm / printer_volume.length_mm))
+        width_segments = max(1, math.ceil(self.width_mm / printer_volume.width_mm))
+        height_segments = max(1, math.ceil(self.height_mm / printer_volume.height_mm))
+        return math.ceil((length_segments + width_segments + height_segments) /3)
+    
+    def __str__(self):
+        return f"{self.length_mm}mm x {self.width_mm}mm x {self.height_mm}mm"
+
+def print_all_scales(measurement, printer_volume):
+    """Print measurement in all common scales with printer compatibility info"""
+    scales = {
+        "Barbie (1:6)": 6,
+        "Dollhouse (1:12)": 12,
+        "Small Dollhouse (1:24)": 24,
+        "DnD Medium (1:64)": 64,
+        "DnD Small (1:72)": 72
+    }
+    
+    print(f"\nOriginal size: {measurement}")
+    print(f"Printer volume: {printer_volume.length_mm}mm x {printer_volume.width_mm}mm x {printer_volume.height_mm}mm")
+    print("-" * 60)
+    
+    for scale_name, scale_value in scales.items():
+        scaled = convert_to_scale(measurement, scale_value)
+        segments = scaled.calculate_segments(printer_volume)
+        print(f"{scale_name}:")
+        print(f"  Scaled size: {scaled}")
+        if segments == 1:
+            print("  Status: Fits in one piece")
+        else:
+            print(f"  Status: Needs to be printed in {segments} pieces")
+        print()
+
+def main():
+    import math
+    
+    # Initialize printer volume
+    printer = PrinterVolume()
+    
+    # Test case 1: Standard door (6'8" x 3' x 4")
+    print("\nTest Case 1: Standard Door")
+    door = Measurement3D(
+        length_ft=6, length_in=8,  # height
+        width_ft=3, width_in=0,    # width
+        height_ft=0, height_in=4   # thickness
+    )
+    print_all_scales(door, printer)
+    
+    # Test case 2: Average human (6' x 2' x 1')
+    print("\nTest Case 2: Average Human")
+    human = Measurement3D(
+        length_ft=6, length_in=0,  # height
+        width_ft=2, width_in=0,    # width
+        height_ft=1, height_in=0   # depth
+    )
+    print_all_scales(human, printer)
+    
+    # Interactive measurement input
+    print("\nEnter your own measurements:")
+    try:
+        print("\nEnter length (depth):")
+        length_ft = int(input("Feet: "))
+        length_in = float(input("Inches: "))
+        
+        print("\nEnter width:")
+        width_ft = int(input("Feet: "))
+        width_in = float(input("Inches: "))
+        
+        print("\nEnter height:")
+        height_ft = int(input("Feet: "))
+        height_in = float(input("Inches: "))
+        
+        custom = Measurement3D(
+            length_ft, length_in,
+            width_ft, width_in,
+            height_ft, height_in
+        )
+        print_all_scales(custom, printer)
+        
+    except ValueError:
+        print("Please enter valid numbers for all dimensions.")
+
+if __name__ == "__main__":
+    main()

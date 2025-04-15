@@ -1,0 +1,42 @@
+import random
+
+def prims_maze(width, height):
+    # Initialize the maze as a 2D array of 0s (walls) and 1s (paths)
+    maze = [[0] * width for _ in range(height)]
+
+    # Select a starting cell randomly
+    start_x = random.randint(0, width - 1)
+    start_y = random.randint(0, height - 1)
+
+    # Mark the starting cell as a path
+    maze[start_y][start_x] = 1
+
+    # Create a queue to hold the cells to visit
+    queue = [(start_x, start_y)]
+
+    # Loop until the queue is empty
+    while queue:
+        # Get the next cell to visit
+        x, y = queue.pop()
+
+        # If the cell is a wall, make it a path and add its neighbors to the queue
+        if maze[y][x] == 1:
+            maze[y][x] = 1
+            if x < width - 1 and maze[y][x + 1] == 0:
+                queue.append((x + 1, y))
+            if x > 0 and maze[y][x - 1] == 0:
+                queue.append((x - 1, y))
+            if y < height - 1 and maze[y + 1][x] == 0:
+                queue.append((x, y + 1))
+            if y > 0 and maze[y - 1][x] == 0:
+                queue.append((x, y - 1))
+
+    # Return the generated maze
+    return maze
+
+# Test the function
+maze = prims_maze(20, 20)
+
+# Print the maze
+for row in maze:
+    print("".join(str(cell) for cell in row))

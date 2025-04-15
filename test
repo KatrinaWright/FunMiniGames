@@ -1,0 +1,80 @@
+class Stack:
+    def __init__(self):
+        self.items = []
+
+    def push(self, item):
+        self.items.append(item)
+
+    def pop(self):
+        if not self.is_empty():
+            return self.items.pop()
+        else:
+            raise IndexError("pop from an empty stack")
+
+    def peek(self):
+        if not self.is_empty():
+            return self.items[-1]
+        else:
+            raise IndexError("peek from an empty stack")
+
+    def is_empty(self):
+        return len(self.items) == 0
+
+    def size(self):
+        return len(self.items)
+
+# Example usage:
+stack = Stack()
+stack.push(1)
+stack.push(2)
+stack.push(3)
+
+print("Stack size:", stack.size())
+print("Top element:", stack.peek())
+
+while not stack.is_empty():
+    print("Popped:", stack.pop())
+
+
+
+import random
+
+class Player:
+    def __init__(self, name):
+        self.name = name
+        self.hand = []
+
+    def draw(self, deck):
+        self.hand.append(deck.pop())
+
+    def play(self):
+        if len(self.hand) > 0:
+            return self.hand.pop(0)
+        else:
+            return None
+
+class Game:
+    def __init__(self, player1, player2):
+        self.player1 = player1
+        self.player2 = player2
+        self.deck = ['R', 'R', 'R', 'R', 'R', 'R', 'G', 'G', 'G', 'G', 'G', 'G', 'B', 'B', 'B', 'B', 'B', 'B', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', '0', '0', '0', '0', '0', '0', 'RR', 'RR', 'RR', 'RR', 'GG', 'GG', 'BB', 'BB', 'YY', 'YY', 'W', 'W', 'W', 'W', 'RRR', 'RRR', 'GGG', 'GGG', 'BBB', 'BBB', 'YYY', 'YYY', 'WW', 'WW']
+
+    def play_round(self):
+        self.player1.draw(self.deck)
+        self.player2.draw(self.deck)
+        print(f"{self.player1.name}'s hand: {self.player1.hand}")
+        print(f"{self.player2.name}'s hand: {self.player2.hand}")
+        p1_play = self.player1.play()
+        p2_play = self.player2.play()
+        print(f"{self.player1.name} played: {p1_play}")
+        print(f"{self.player2.name} played: {p2_play}")
+
+    def start_game(self):
+        for i in range(6):
+            print(f"\nRound {i+1}:")
+            self.play_round()
+
+player1 = Player("Player1")
+player2 = Player("Player2")
+game = Game(player1, player2)
+game.start_game()
